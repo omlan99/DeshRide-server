@@ -3,7 +3,7 @@ require("dotenv").config();
 const cors = require("cors");
 const connect = require("./DB");
 
-const userRoutes = require("./Routes/userRoutes"); // Import user routes
+const consumerUserRoutes = require("./Routes/consumerUserRoutes"); // Import user routes
 
 const port = process.env.PORT || 5001;
 const app = express();
@@ -15,13 +15,13 @@ connect();
 app.use(express.json());
 app.use(
   cors({
-    origin: "http://localhost:5173", // Allow the specific frontend origin
-    credentials: true, // Allow cookies/credentials to be included in the request
+    origin: "http://localhost:5173",
+    credentials: true,
   })
 );
 
 // Routes
-app.use("/api/users", userRoutes); // Use the user routes
+app.use("/users", consumerUserRoutes); // Use the user routes
 
 app.get("/", (req, res) => {
   res.send("DeshRide Database is connected");

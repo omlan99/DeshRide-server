@@ -1,4 +1,4 @@
-const User = require("../Model/consumerUserModel");
+const User = require("../Model/providerUserModel");
 
 // Create new Consumer User [/consumerUsers]
 const createUser = async (req, res) => {

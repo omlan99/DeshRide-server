@@ -28,5 +28,5 @@ const userSchema = new Schema({
   },
 });
 
-const consumerUserModel = model("consumer_user", userSchema); // Naming the model as "User"
-module.exports = consumerUserModel;
+const providerUserModel = model("provider_user", userSchema); // Naming the model as "User"
+module.exports = providerUserModel;
