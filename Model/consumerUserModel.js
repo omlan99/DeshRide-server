@@ -24,9 +24,9 @@ const userSchema = new Schema({
   role: {
     type: String,
     required: true, // role is required
-    // enum: ["consumer", "admin", "user"],
+    // enum: ["consumer", "provider"],
   },
 });
 
-const consumerUserModel = model("consumerUser", userSchema); // Naming the model as "User"
+const consumerUserModel = model("consumer_user", userSchema); // Naming the model as "User"
 module.exports = consumerUserModel;

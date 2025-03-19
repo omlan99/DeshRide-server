@@ -1,9 +1,12 @@
-const User = require("../Model/consumerUserModel");
+const User = require("../Model/providerUserModel");
 
 // Create new Consumer User [/consumerUsers]
 const createUser = async (req, res) => {
   try {
-    const { fullName, email, phoneNumber, userName, role } = req.body;
+    const providerData = req.body;
+
+    const email = providerData.email;
+    const userName = providerData.userName;
 
     // Check if email or userName already exists
     const existingUser = await User.findOne({ $or: [{ email }, { userName }] });
@@ -14,7 +17,7 @@ const createUser = async (req, res) => {
     }
 
     // Create new user
-    const newUser = new User({ fullName, email, phoneNumber, userName, role });
+    const newUser = new User(providerData);
     await newUser.save();
 
     res
