@@ -1,29 +1,33 @@
-const express = require('express');
-require("dotenv").config()
-const port = process.env.PORT || 5000;
+const express = require("express");
+require("dotenv").config();
+const cors = require("cors");
+const connect = require("./DB");
 
-const connect = require("./DB")
-connect()
-const app = express()
-app.use(express.json())
-const Users = require('./Model/userModel')
+const userRoutes = require("./Routes/userRoutes"); // Import user routes
 
+const port = process.env.PORT || 5001;
+const app = express();
 
-app.get("/", (req,res) =>{
-    res.send("DeshRide Database is connected")
-})
-app.get('/users',  async(req, res) =>{
-    try{
-        const users = await Users.find();
+// Connect to MongoDB
+connect();
 
-        res.status(200).json(users);
-    }
-    catch(err){
-        res.status(500).json({ message: "Server Error" });
-    }
-})
+// Middleware
+app.use(express.json());
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Allow the specific frontend origin
+    credentials: true, // Allow cookies/credentials to be included in the request
+  })
+);
 
+// Routes
+app.use("/api/users", userRoutes); // Use the user routes
 
-app.listen(port, () =>{
-    console.log("app is running on port", port)
-})
+app.get("/", (req, res) => {
+  res.send("DeshRide Database is connected");
+});
+
+// Start Server
+app.listen(port, () => {
+  console.log("App is running on port", port);
+});
