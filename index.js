@@ -23,7 +23,7 @@ app.use(
 
 // Routes
 app.use("/users", consumerUserRoutes); // Use the user routes
-app.use("/users", providerUserRoutes); // Use the user routes
+app.use("/users", providerUserRoutes);
 
 app.get("/", (req, res) => {
   res.send("DeshRide Database is connected");
