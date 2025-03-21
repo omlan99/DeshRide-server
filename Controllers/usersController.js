@@ -47,11 +47,11 @@ const getUserByEmail = async (req, res) => {
 
     if (user.role === "provider") {
       if (user.hasCar && user.carUsage === "drive") {
-        userRole = "driver_with_car"; // Provider with car (driving)
+        userRole = "car_investor_with_driver"; // Provider with car (driving)
       } else if (user.hasCar && user.carUsage === "rent") {
-        userRole = "renter"; // Provider with car (renting)
+        userRole = "car_investor_without_driver"; // Provider with car (renting)
       } else if (!user.hasCar) {
-        userRole = "provider_without_car"; // Provider without a car
+        userRole = "driver_without_car"; // Provider without a car
       }
     } else if (user.role === "consumer") {
       userRole = "consumer"; // Consumer role
