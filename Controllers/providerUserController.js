@@ -1,6 +1,6 @@
 const User = require("../Model/providerUserModel");
 
-// Create new Consumer User [/consumerUsers]
+// Create new Consumer User [post -> /consumerUsers]
 const createUser = async (req, res) => {
   try {
     const providerData = req.body;
@@ -28,11 +28,10 @@ const createUser = async (req, res) => {
   }
 };
 
-// Get the full user object by email [/users/getUser/:email]
+// Get the single user data by email [get -> /users/getUser/:email]
 const getUserByEmail = async (req, res) => {
   try {
-    const { email } = req.params; // Extract email from URL parameter
-    console.log("Requested email:", email);
+    const { email } = req.params;
 
     if (!email) {
       return res.status(400).json({ error: "Email is required" });
@@ -43,7 +42,23 @@ const getUserByEmail = async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    res.status(200).json(user); // Return user object
+    // Determine the user's role
+    let userRole = null;
+
+    if (user.role === "provider") {
+      if (user.hasCar && user.carUsage === "drive") {
+        userRole = "driver_with_car"; // Provider with car (driving)
+      } else if (user.hasCar && user.carUsage === "rent") {
+        userRole = "renter"; // Provider with car (renting)
+      } else if (!user.hasCar) {
+        userRole = "provider_without_car"; // Provider without a car
+      }
+    } else if (user.role === "consumer") {
+      userRole = "consumer"; // Consumer role
+    }
+
+    // Return user data along with the computed role
+    res.status(200).json({ ...user.toObject(), userRole });
   } catch (error) {
     console.error("Error fetching user:", error);
     res.status(500).json({ error: error.message });

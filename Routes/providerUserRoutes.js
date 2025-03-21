@@ -7,6 +7,6 @@ const {
 const router = express.Router();
 
 router.post("/providerUsers", createUser); // Create a new user for the consumer
-router.post("/getUser", getUserByEmail);
+router.get("/getUser/:email", getUserByEmail);
 
 module.exports = router;
