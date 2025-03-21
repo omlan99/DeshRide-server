@@ -1,29 +1,27 @@
-const { default: mongoose } = require("mongoose");
-
-const { Schema, model } = mongoose;
+const { Schema, model } = require("mongoose");
 
 const userSchema = new Schema({
   fullName: {
     type: String,
-    required: false,
+    required: true,
   },
   email: {
     type: String,
-    required: false,
-    unique: true, // ensuring email is unique
+    required: true,
+    unique: true,
   },
   phoneNumber: {
     type: String,
-    required: false,
+    required: true,
   },
   userName: {
     type: String,
-    required: false,
-    unique: true, // userName must be unique
+    required: true,
+    unique: true,
   },
   role: {
     type: String,
-    required: false,
+    required: true,
     // enum: ["consumer", "provider"],
   },
   nid: {
@@ -65,5 +63,5 @@ const userSchema = new Schema({
   },
 });
 
-const providerUserModel = model("provider_user", userSchema);
-module.exports = providerUserModel;
+const usersModel = model("users", userSchema);
+module.exports = usersModel;

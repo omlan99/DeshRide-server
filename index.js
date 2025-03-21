@@ -3,8 +3,8 @@ require("dotenv").config();
 const cors = require("cors");
 const connect = require("./DB");
 
-const consumerUserRoutes = require("./Routes/consumerUserRoutes"); // Import consumer user routes
-const providerUserRoutes = require("./Routes/providerUserRoutes"); // Import provider user routes
+const usersRoutes = require("./Routes/usersRoutes"); // Import users routes
+// const usersRoutes = require("./Routes/usersRoutes"); // Import users routes
 
 const port = process.env.PORT || 5001;
 const app = express();
@@ -22,8 +22,8 @@ app.use(
 );
 
 // Routes
-app.use("/users", consumerUserRoutes); // Use the user routes
-app.use("/users", providerUserRoutes);
+app.use("/users", usersRoutes); // Use the user routes
+// app.use("/users", providerUserRoutes);
 
 app.get("/", (req, res) => {
   res.send("DeshRide Database is connected");
