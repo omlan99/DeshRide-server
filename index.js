@@ -6,8 +6,8 @@ const connect = require("./DB");
 const app = express();
 const connectDB = require("./DB")
 connectDB()
-const users = require("./routes/users");
-const cors = require("cors");
+const users = require("./Routes/usersRoutes");
+// const cors = require("cors");
 
 
 
