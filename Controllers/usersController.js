@@ -1,6 +1,7 @@
 const User = require("../Model/usersModel");
 
-// Create new Consumer User [post -> /consumerUsers]
+//! Create new Consumer User [post -> /consumerUsers]
+
 const createUser = async (req, res) => {
   try {
     const providerData = req.body;
@@ -28,7 +29,8 @@ const createUser = async (req, res) => {
   }
 };
 
-// Get the single user data by email [get -> /users/getUser/:email]
+//! Get the single user data by email [get -> /users/getUser/:email]
+
 const getUserByEmail = async (req, res) => {
   try {
     const { email } = req.params;
@@ -65,15 +67,32 @@ const getUserByEmail = async (req, res) => {
   }
 };
 
-// Get all users [get -> /users/all_users]
+//! Get all users [get -> /users/all_users]
+
 const getAllUsers = async (req, res) => {
   try {
     const users = await User.find({});
-    res.status(200).json(users); // Ensure this returns an array of users
+    res.status(200).json(users); 
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
+//! Delete a user [delete -> /users/deleteUser/:id]
+const deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
 
-module.exports = { createUser, getUserByEmail, getAllUsers };
+    const deletedUser = await User.findByIdAndDelete(id);
+    if (!deletedUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.status(200).json({ message: "User deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Add this to your exports
+module.exports = { createUser, getUserByEmail, getAllUsers, deleteUser };
