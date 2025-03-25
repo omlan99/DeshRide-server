@@ -13,6 +13,8 @@ app.use(express.json())
 
 app.use("/api", users)
 const userRoutes = require("./Routes/userRoutes"); // Import user routes
+const usersRoutes = require("./Routes/usersRoutes"); // Import users routes
+// const usersRoutes = require("./Routes/usersRoutes"); // Import users routes
 
 const port = process.env.PORT || 5001;
 
@@ -23,13 +25,14 @@ connect();
 app.use(express.json());
 app.use(
   cors({
-    origin: "http://localhost:5173", // Allow the specific frontend origin
-    credentials: true, // Allow cookies/credentials to be included in the request
+    origin: "http://localhost:5173",
+    credentials: true,
   })
 );
 
 // Routes
-app.use("/api/users", userRoutes); // Use the user routes
+app.use("/users", usersRoutes); // Use the user routes
+// app.use("/users", providerUserRoutes);
 
 app.get("/", (req, res) => {
   res.send("DeshRide Database is connected");
