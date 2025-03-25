@@ -2,7 +2,7 @@ const express = require("express");
 
 const {
   createUser,
-  getUserByEmail,   getAllUsers, deleteUser
+  getUserByEmail, getAllUsers, deleteUser
 
 } = require("../Controllers/usersController");
 
