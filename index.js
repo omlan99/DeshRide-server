@@ -7,12 +7,13 @@ const app = express();
 const connectDB = require("./DB")
 connectDB()
 const users = require("./routes/users");
+const cors = require("cors");
 
 
-app.use(express.json())
+
 
 app.use("/api", users)
-const userRoutes = require("./Routes/userRoutes"); // Import user routes
+// const userRoutes = require("./Routes/userRoutes"); // Import user routes
 const usersRoutes = require("./Routes/usersRoutes"); // Import users routes
 // const usersRoutes = require("./Routes/usersRoutes"); // Import users routes
 
@@ -25,7 +26,9 @@ connect();
 app.use(express.json());
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    // origin: "http://localhost:5173",
+    origin: "",
+
     credentials: true,
   })
 );
