@@ -18,6 +18,7 @@ const createUser = async (req, res) => {
     }
 
     // Create new user
+    
     const newUser = new User(providerData);
     await newUser.save();
 
