@@ -65,3 +65,7 @@ const userSchema = new Schema({
 
 const usersModel = model("users", userSchema);
 module.exports = usersModel;
+//name
+//email
+//password
+//phone number
