@@ -7,10 +7,11 @@ const addCar = async (req, res) => {
         console.log('Received request body:', req.body);
         console.log('Received file:', req.file);
 
-        // Validate required fields
+        // Validate required fields including owner info
         const requiredFields = [
             'name', 'model', 'price', 'type', 
-            'transmission', 'fuelType', 'seats', 'features'
+            'transmission', 'fuelType', 'seats', 'features',
+            'addedBy', 'ownerEmail'
         ];
 
         for (let field of requiredFields) {
@@ -56,7 +57,7 @@ const addCar = async (req, res) => {
             // Split features into an array
             const featuresArray = req.body.features.split(',').map(feature => feature.trim());
 
-            // Create new car document
+            // Create new car document with owner info
             const newCar = new Car({
                 name: req.body.name,
                 model: req.body.model,
@@ -67,7 +68,9 @@ const addCar = async (req, res) => {
                 seats: parseInt(req.body.seats),
                 features: featuresArray,
                 imageUrl,
-                // Optionally, you can generate a registration number or let the pre-save hook handle it
+                addedBy: req.body.addedBy,
+                ownerEmail: req.body.ownerEmail,
+                carStatus: 'Pending', // Set default status
                 VehicleRegistrationNo: req.body.VehicleRegistrationNo || undefined
             });
 
