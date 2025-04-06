@@ -25,4 +25,5 @@ router.post('/', upload.single('image'), addCar);
 // Route for getting all cars
 router.get('/', getCars);
 
+
 module.exports = router;
