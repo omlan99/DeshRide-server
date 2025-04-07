@@ -18,6 +18,7 @@ const createUser = async (req, res) => {
     }
 
     // Create new user
+    
     const newUser = new User(providerData);
     await newUser.save();
 
@@ -94,5 +95,45 @@ const deleteUser = async (req, res) => {
   }
 };
 
+//! Update user role [put -> /users/updateRole/:id]
+const updateUserRole = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { role } = req.body;
+
+    if (!role) {
+      return res.status(400).json({ error: "Role is required" });
+    }
+
+    const validRoles = ['provider', 'consumer', 'driver', 'ownerDriver', 'providerOnly', 'admin'];
+    if (!validRoles.includes(role)) {
+      return res.status(400).json({ error: "Invalid role" });
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      { role },
+      { new: true } // Return the updated document
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.status(200).json({ message: "User role updated successfully", user: updatedUser });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const updateStatus = async(req, res) => {
+  const email = req.params.email
+  const data = req.body 
+  
+  
+  const user= await User.updateOne({email, data})
+
+}
+
 // Add this to your exports
-module.exports = { createUser, getUserByEmail, getAllUsers, deleteUser };
+module.exports = { createUser, getUserByEmail, getAllUsers, deleteUser,updateUserRole, updateStatus };

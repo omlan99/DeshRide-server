@@ -5,14 +5,11 @@ const connect = require("./DB");
 
 const app = express();
 const connectDB = require("./DB")
-connectDB()
-const users = require("./routes/users");
-const cors = require("cors");
+connectDB();
 
 
 
 
-app.use("/api", users)
 // const userRoutes = require("./Routes/userRoutes"); // Import user routes
 const usersRoutes = require("./Routes/usersRoutes"); // Import users routes
 // const usersRoutes = require("./Routes/usersRoutes"); // Import users routes
@@ -26,8 +23,8 @@ connect();
 app.use(express.json());
 app.use(
   cors({
-    // origin: "http://localhost:5173",
-    origin: "",
+    origin: "http://localhost:5173",
+    // origin: "https://deshride-server.onrender.com/",
 
     credentials: true,
   })
@@ -36,10 +33,15 @@ app.use(
 // Routes
 app.use("/users", usersRoutes); // Use the user routes
 // app.use("/users", providerUserRoutes);
+app.patch("/user/:email" , (req, res) =>{
+  const email = req.params.id
+  const data = req.body
+} )
 
 app.get("/", (req, res) => {
   res.send("DeshRide Database is connected");
 });
+
 
 // Start Server
 app.listen(port, () => {
