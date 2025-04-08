@@ -188,8 +188,41 @@ const updateCarStatus = async (req, res) => {
     }
 };
 
+// ... delete cars
 
-module.exports = { addCar, getCars, getMyCars, updateCarStatus };
+const deleteCar = async (req, res) => {
+    try {
+        const { carId } = req.params;
 
+        if (!carId) {
+            return res.status(400).json({ 
+                message: 'Car ID is required' 
+            });
+        }
+
+        const deletedCar = await Car.findByIdAndDelete(carId);
+
+        if (!deletedCar) {
+            return res.status(404).json({ 
+                message: 'Car not found' 
+            });
+        }
+
+        res.status(200).json({
+            message: 'Car deleted successfully',
+            carId: carId
+        });
+    } catch (error) {
+        console.error('Error deleting car:', error);
+        res.status(500).json({ 
+            message: 'Failed to delete car', 
+            error: error.message 
+        });
+    }
+};
+
+// ... existing code ...
+
+module.exports = { addCar, getCars, getMyCars, updateCarStatus, deleteCar };
 
 
