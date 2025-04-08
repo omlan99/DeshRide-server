@@ -126,5 +126,16 @@ const updateUserRole = async (req, res) => {
   }
 };
 
+const updateStatus = async(req, res) => {
+  const email = req.params.email
+  const data = req.body 
+  
+  
+  const user= await User.updateOne({email, data})
+
+}
+
+// Add this to your exports
+module.exports = { createUser, getUserByEmail, getAllUsers, deleteUser,updateUserRole, updateStatus };
 // Add this to your exports
 module.exports = { createUser, getUserByEmail, getAllUsers, deleteUser,updateUserRole  };
