@@ -118,7 +118,7 @@ const getCars = async (req, res) => {
     }
 };
 
-// Add this new function to your carController.js
+// get cars by email
 const getMyCars = async (req, res) => {
     try {
         const ownerEmail = req.query.ownerEmail;
@@ -142,6 +142,54 @@ const getMyCars = async (req, res) => {
     }
 };
 
+// Update cars ActiveStatus
+const updateCarStatus = async (req, res) => {
+    try {
+        const { carId, status } = req.body;
 
-module.exports = { addCar, getCars, getMyCars };
+        // Validate inputs
+        if (!carId || !status) {
+            return res.status(400).json({ 
+                message: 'Car ID and status are required' 
+            });
+        }
+
+        // Validate status value
+        const validStatuses = ['Pending', 'Approved', 'Rejected'];
+        if (!validStatuses.includes(status)) {
+            return res.status(400).json({ 
+                message: 'Invalid status value' 
+            });
+        }
+
+        // Find and update the car
+        const updatedCar = await Car.findByIdAndUpdate(
+            carId,
+            { carStatus: status },
+            { new: true }
+        );
+
+        if (!updatedCar) {
+            return res.status(404).json({ 
+                message: 'Car not found' 
+            });
+        }
+
+        res.status(200).json({
+            message: 'Car status updated successfully',
+            car: updatedCar
+        });
+    } catch (error) {
+        console.error('Error updating car status:', error);
+        res.status(500).json({ 
+            message: 'Failed to update car status', 
+            error: error.message 
+        });
+    }
+};
+
+
+module.exports = { addCar, getCars, getMyCars, updateCarStatus };
+
+
 
