@@ -137,3 +137,5 @@ const updateStatus = async(req, res) => {
 
 // Add this to your exports
 module.exports = { createUser, getUserByEmail, getAllUsers, deleteUser,updateUserRole, updateStatus };
+// Add this to your exports
+module.exports = { createUser, getUserByEmail, getAllUsers, deleteUser,updateUserRole  };
