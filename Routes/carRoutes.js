@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const { addCar, getCars } = require('../Controllers/carController');
+const { addCar, getCars, getMyCars } = require('../Controllers/carController');
 
 // Configure multer for file upload
 const upload = multer({
@@ -19,11 +19,12 @@ const upload = multer({
     }
 });
 
-// Route for adding a car with image upload
-router.post('/', upload.single('image'), addCar);
 
-// Route for getting all cars
+
+router.post('/', upload.single('image'), addCar);
 router.get('/', getCars);
+router.get('/my-cars', getMyCars);
+
 
 
 module.exports = router;

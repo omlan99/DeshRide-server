@@ -4,14 +4,11 @@ const FormData = require('form-data');
 
 const addCar = async (req, res) => {
     try {
-        console.log('Received request body:', req.body);
-        console.log('Received file:', req.file);
-
         // Validate required fields including owner info
         const requiredFields = [
             'name', 'model', 'price', 'type', 
             'transmission', 'fuelType', 'seats', 'features',
-            'addedBy', 'ownerEmail'
+            'addedBy', 'ownerEmail','carLocation'
         ];
 
         for (let field of requiredFields) {
@@ -67,6 +64,7 @@ const addCar = async (req, res) => {
                 fuelType: req.body.fuelType,
                 seats: parseInt(req.body.seats),
                 features: featuresArray,
+                carLocation: req.body.carLocation,
                 imageUrl,
                 addedBy: req.body.addedBy,
                 ownerEmail: req.body.ownerEmail,
@@ -120,4 +118,30 @@ const getCars = async (req, res) => {
     }
 };
 
-module.exports = { addCar, getCars };
+// Add this new function to your carController.js
+const getMyCars = async (req, res) => {
+    try {
+        const ownerEmail = req.query.ownerEmail;
+        if (!ownerEmail) {
+            return res.status(400).json({ 
+                message: 'Owner email is required' 
+            });
+        }
+
+        const cars = await Car.find({ ownerEmail });
+        res.status(200).json({
+            message: 'Cars retrieved successfully',
+            cars: cars
+        });
+    } catch (error) {
+        console.error('Error retrieving cars:', error);
+        res.status(500).json({ 
+            message: 'Failed to retrieve cars', 
+            error: error.message 
+        });
+    }
+};
+
+
+module.exports = { addCar, getCars, getMyCars };
+
