@@ -80,4 +80,13 @@ const getRentalsByUser = async (req, res) => {
   res.status(200).json(rentals);
 };
 
-module.exports = { addRentalInfo, getRentalsByUser };
+// /get-car-rentals/:id
+const getRentalsByUserId = async (req, res) => {
+  const { id } = req.params;
+  // console.log(id);
+
+  const data = await CarRentals.findById(id); // For a single rental
+  res.status(200).json(data);
+};
+
+module.exports = { addRentalInfo, getRentalsByUser, getRentalsByUserId };
