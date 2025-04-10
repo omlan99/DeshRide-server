@@ -4,11 +4,12 @@ const cors = require("cors");
 const connect = require("./DB");
 
 const app = express();
-const connectDB = require("./DB")
-connectDB()
+const connectDB = require("./DB");
+connectDB();
 
 const users = require("./Routes/usersRoutes");
 const carRoutes = require("./Routes/carRoutes");
+const carRentalRoutes = require("./Routes/CarRentalRoutes");
 
 // const cors = require("cors");
 
@@ -21,13 +22,13 @@ app.use(
     origin: "http://localhost:5173", // Explicit origin
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ['Content-Type', 'Authorization'] // Add required headers
+    allowedHeaders: ["Content-Type", "Authorization"], // Add required headers
   })
 );
 
-
-app.use("/api", users)
+app.use("/api", users);
 app.use("/cars", carRoutes);
+app.use("/car-rental", carRentalRoutes);
 
 // const userRoutes = require("./Routes/userRoutes"); // Import user routes
 const usersRoutes = require("./Routes/usersRoutes"); // Import users routes
@@ -37,8 +38,6 @@ const port = process.env.PORT || 5001;
 
 // Connect to MongoDB
 connect();
-
-
 
 // Routes
 app.use("/users", usersRoutes); // Use the user routes
