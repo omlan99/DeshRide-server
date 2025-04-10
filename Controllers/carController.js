@@ -1,6 +1,7 @@
 const Car = require("../Model/carModel");
 const axios = require("axios");
 const FormData = require("form-data");
+const { ObjectId } = require("mongodb");
 
 const addCar = async (req, res) => {
   try {
@@ -113,20 +114,23 @@ const addCar = async (req, res) => {
 
 // Implement getCars function
 const getCars = async (req, res) => {
-  try {
-    // Fetch all cars from the database
-    const cars = await Car.find();
+  const { carId } = req.query;
 
-    // Respond with the list of cars
-    res.status(200).json({
+  // this will show all the cars list
+  if (!carId) {
+    const cars = await Car.find();
+    return res.status(200).json({
       message: "Cars retrieved successfully",
       cars: cars,
     });
-  } catch (error) {
-    console.error("Error retrieving cars:", error);
-    res.status(500).json({
-      message: "Failed to retrieve cars",
-      error: error.message,
+  }
+
+  // this will show the single car by id
+  if (carId) {
+    const car = await Car.findById(carId);
+    return res.status(200).json({
+      message: "Got car by CarId successfully",
+      car: car,
     });
   }
 };
