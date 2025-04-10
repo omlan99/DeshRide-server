@@ -25,7 +25,7 @@ const carSchema = new mongoose.Schema({
     type: {
         type: String,
         required: true,
-        enum: ['Sedan', 'SUV', 'Truck', 'Sports', 'Luxury']
+        enum: ['Sedan', 'SUV', 'Truck', 'Sports', 'Luxury','CNG']
     },
     transmission: {
         type: String,
@@ -41,7 +41,7 @@ const carSchema = new mongoose.Schema({
         type: Number,
         required: true,
         min: 2,
-        max: 8
+        max: 57
     },
     features: {
         type: [String],
