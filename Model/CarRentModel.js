@@ -73,9 +73,29 @@ const carSchema = new mongoose.Schema(
       enum: ["Pending", "Approved", "Rejected"], // Add any other statuses you need
       default: "Pending",
     },
-    createdAt: {
+    rentMessage: {
+      type: String,
+      require: false,
+    },
+    requestingTime: {
       type: Date,
       default: Date.now,
+    },
+    requesterEmail: {
+      type: String,
+      required: true,
+    },
+    requesterName: {
+      type: String,
+      required: true,
+    },
+    requesterPhone: {
+      type: String,
+      required: true,
+    },
+    requesterUserName: {
+      type: String,
+      required: true,
     },
   },
   { timestamps: true }
