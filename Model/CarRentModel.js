@@ -97,6 +97,10 @@ const carSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    dateRange: {
+      type: Array,
+      required: false,
+    },
   },
   { timestamps: true }
 );

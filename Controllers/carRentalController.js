@@ -22,6 +22,7 @@ const addRentalInfo = async (req, res) => {
     requesterName,
     requesterPhone,
     requesterUserName,
+    dateRange,
 
     // requesterLocation,
     // createdAt,
@@ -56,6 +57,7 @@ const addRentalInfo = async (req, res) => {
     requesterName,
     requesterPhone,
     requesterUserName,
+    dateRange,
   });
 
   await newCarRental.save();
