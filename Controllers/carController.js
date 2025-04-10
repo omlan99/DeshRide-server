@@ -3,21 +3,14 @@ const axios = require("axios");
 const FormData = require("form-data");
 const { ObjectId } = require("mongodb");
 
+// controllers/carController.js
 const addCar = async (req, res) => {
   try {
-    // Validate required fields including owner info
+    // Updated required fields
     const requiredFields = [
-      "name",
-      "model",
-      "price",
-      "type",
-      "transmission",
-      "fuelType",
-      "seats",
-      "features",
-      "addedBy",
-      "ownerEmail",
-      "carLocation",
+      "name", "model", "price", "type", "transmission", "fuelType", 
+      "seats", "features", "addedBy", "ownerEmail", "carLocation",
+      "mileage", "yearOfManufacture", "color"  // New required fields
     ];
 
     for (let field of requiredFields) {
@@ -28,81 +21,69 @@ const addCar = async (req, res) => {
       }
     }
 
-    // Check if file exists
-    if (!req.file) {
+    // Check if all required files exist
+    if (!req.files || !req.files.image || !req.files.insuranceDocs || 
+        !req.files.registrationCopy || !req.files.roadPermit || !req.files.taxToken) {
       return res.status(400).json({
-        message: "Image file is required",
+        message: "All image files (car image, insurance, registration, permit, tax token) are required",
       });
     }
 
-    // Image hosting API (ImgBB)
     const imageHostingKey = process.env.IMAGE_HOSTING_KEY;
-    if (!imageHostingKey) {
-      return res.status(500).json({
-        message: "Image hosting key is not configured",
-      });
-    }
-
     const imageHostingUrl = `https://api.imgbb.com/1/upload?key=${imageHostingKey}`;
 
-    // Create form data for image upload
-    const formData = new FormData();
-    formData.append("image", req.file.buffer.toString("base64"));
-
-    try {
-      // Upload image to ImgBB
-      const imageUploadResponse = await axios.post(imageHostingUrl, formData, {
-        headers: {
-          ...formData.getHeaders(),
-        },
+    // Function to upload image to ImgBB
+    const uploadImage = async (file) => {
+      const formData = new FormData();
+      formData.append("image", file.buffer.toString("base64"));
+      const response = await axios.post(imageHostingUrl, formData, {
+        headers: { ...formData.getHeaders() }
       });
+      return response.data.data.display_url;
+    };
 
-      // Get the image URL from ImgBB response
-      const imageUrl = imageUploadResponse.data.data.display_url;
+    // Upload all images
+    const [imageUrl, insuranceDocsUrl, registrationCopyUrl, roadPermitUrl, taxTokenUrl] = await Promise.all([
+      uploadImage(req.files.image[0]),
+      uploadImage(req.files.insuranceDocs[0]),
+      uploadImage(req.files.registrationCopy[0]),
+      uploadImage(req.files.roadPermit[0]),
+      uploadImage(req.files.taxToken[0])
+    ]);
 
-      // Split features into an array
-      const featuresArray = req.body.features
-        .split(",")
-        .map((feature) => feature.trim());
+    const featuresArray = req.body.features.split(",").map(feature => feature.trim());
 
-      // Create new car document with owner info
-      const newCar = new Car({
-        name: req.body.name,
-        model: req.body.model,
-        price: parseFloat(req.body.price),
-        type: req.body.type,
-        transmission: req.body.transmission,
-        fuelType: req.body.fuelType,
-        seats: parseInt(req.body.seats),
-        features: featuresArray,
-        carLocation: req.body.carLocation,
-        imageUrl,
-        addedBy: req.body.addedBy,
-        ownerEmail: req.body.ownerEmail,
-        carStatus: "Pending", // Set default status
-        VehicleRegistrationNo: req.body.VehicleRegistrationNo || undefined,
-      });
+    const newCar = new Car({
+      name: req.body.name,
+      model: req.body.model,
+      price: parseFloat(req.body.price),
+      type: req.body.type,
+      transmission: req.body.transmission,
+      fuelType: req.body.fuelType,
+      seats: parseInt(req.body.seats),
+      features: featuresArray,
+      carLocation: req.body.carLocation,
+      mileage: parseFloat(req.body.mileage),  // New field
+      yearOfManufacture: parseInt(req.body.yearOfManufacture),  // New field
+      bookingStatus: 'Available',  // New field with default value
+      color: req.body.color,  // New field
+      imageUrl,
+      insuranceDocsUrl,  // New field
+      registrationCopyUrl,  // New field
+      roadPermitUrl,  // New field
+      taxTokenUrl,  // New field
+      addedBy: req.body.addedBy,
+      ownerEmail: req.body.ownerEmail,
+      carStatus: "Pending",
+      VehicleRegistrationNo: req.body.VehicleRegistrationNo || undefined,
+    });
 
-      // Save car to database
-      await newCar.save();
+    await newCar.save();
 
-      // Respond with success message and car details
-      res.status(201).json({
-        message: "Car added successfully",
-        car: newCar,
-      });
-    } catch (imageUploadError) {
-      console.error(
-        "Image upload error:",
-        imageUploadError.response
-          ? imageUploadError.response.data
-          : imageUploadError.message
-      );
-      return res.status(500).json({
-        message: "Failed to upload image",
-        error: imageUploadError.message,
-      });
-    }
+    res.status(201).json({
+      message: "Car added successfully",
+      car: newCar,
+    });
   } catch (error) {
     console.error("Error in addCar:", error);
     res.status(500).json({
