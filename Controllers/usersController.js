@@ -18,7 +18,7 @@ const createUser = async (req, res) => {
     }
 
     // Create new user
-    
+
     const newUser = new User(providerData);
     await newUser.save();
 
@@ -31,7 +31,6 @@ const createUser = async (req, res) => {
 };
 
 //! Get the single user data by email [get -> /users/getUser/:email]
-
 const getUserByEmail = async (req, res) => {
   try {
     const { email } = req.params;
@@ -73,7 +72,7 @@ const getUserByEmail = async (req, res) => {
 const getAllUsers = async (req, res) => {
   try {
     const users = await User.find({});
-    res.status(200).json(users); 
+    res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -105,7 +104,14 @@ const updateUserRole = async (req, res) => {
       return res.status(400).json({ error: "Role is required" });
     }
 
-    const validRoles = ['provider', 'consumer', 'driver', 'ownerDriver', 'providerOnly', 'admin'];
+    const validRoles = [
+      "provider",
+      "consumer",
+      "driver",
+      "ownerDriver",
+      "providerOnly",
+      "admin",
+    ];
     if (!validRoles.includes(role)) {
       return res.status(400).json({ error: "Invalid role" });
     }
@@ -120,7 +126,9 @@ const updateUserRole = async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    res.status(200).json({ message: "User role updated successfully", user: updatedUser });
+    res
+      .status(200)
+      .json({ message: "User role updated successfully", user: updatedUser });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
