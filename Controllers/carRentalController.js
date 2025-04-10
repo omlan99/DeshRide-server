@@ -23,6 +23,7 @@ const addRentalInfo = async (req, res) => {
     requesterPhone,
     requesterUserName,
     dateRange,
+    rentStatus,
 
     // requesterLocation,
     // createdAt,
@@ -58,6 +59,7 @@ const addRentalInfo = async (req, res) => {
     requesterPhone,
     requesterUserName,
     dateRange,
+    rentStatus,
   });
 
   await newCarRental.save();
@@ -67,4 +69,15 @@ const addRentalInfo = async (req, res) => {
     .json({ message: "Car rental added successfully", newCarRental });
 };
 
-module.exports = { addRentalInfo };
+// path -> [/car-rental/get-car-rentals]
+const getRentalsByUser = async (req, res) => {
+  const { ownerEmail } = req.params; // Change to use URL params
+  // console.log(ownerEmail);
+
+  // Fetch rentals from the database
+  const rentals = await CarRentals.find({ ownerEmail });
+
+  res.status(200).json(rentals);
+};
+
+module.exports = { addRentalInfo, getRentalsByUser };
