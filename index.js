@@ -1,29 +1,54 @@
-const express = require('express');
-require("dotenv").config()
-const port = process.env.PORT || 5000;
+const express = require("express");
+require("dotenv").config();
+const cors = require("cors");
+const connect = require("./DB");
 
-const connect = require("./DB")
-connect()
-const app = express()
-app.use(express.json())
-const Users = require('./Model/userModel')
+const app = express();
+const connectDB = require("./DB")
+connectDB()
+
+const users = require("./Routes/usersRoutes");
+const carRoutes = require("./Routes/carRoutes");
+
+// const cors = require("cors");
+
+// Add this before your routes
+
+// Middleware
+app.use(express.json());
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Explicit origin
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ['Content-Type', 'Authorization'] // Add required headers
+  })
+);
 
 
-app.get("/", (req,res) =>{
-    res.send("DeshRide Database is connected")
-})
-app.get('/users',  async(req, res) =>{
-    try{
-        const users = await Users.find();
+app.use("/api", users)
+app.use("/cars", carRoutes);
 
-        res.status(200).json(users);
-    }
-    catch(err){
-        res.status(500).json({ message: "Server Error" });
-    }
-})
+// const userRoutes = require("./Routes/userRoutes"); // Import user routes
+const usersRoutes = require("./Routes/usersRoutes"); // Import users routes
+// const usersRoutes = require("./Routes/usersRoutes"); // Import users routes
+
+const port = process.env.PORT || 5001;
+
+// Connect to MongoDB
+connect();
 
 
-app.listen(port, () =>{
-    console.log("app is running on port", port)
-})
+
+// Routes
+app.use("/users", usersRoutes); // Use the user routes
+// app.use("/users", providerUserRoutes);
+
+app.get("/", (req, res) => {
+  res.send("DeshRide Database is connected");
+});
+
+// Start Server
+app.listen(port, () => {
+  console.log("App is running on port", port);
+});
