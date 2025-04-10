@@ -61,10 +61,6 @@ const userSchema = new Schema({
     type: String,
     required: false,
   },
-  status : {
-    type: String,
-    enum : ['locked', "unlocked"]
-  }
 });
 
 const usersModel = model("users", userSchema);
