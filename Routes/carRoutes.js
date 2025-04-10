@@ -9,11 +9,12 @@ const {
   deleteCar,
 } = require("../Controllers/carController");
 
-// Configure multer for file upload
+// Configure multer for multiple file uploads
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: {
-    fileSize: 5 * 1024 * 1024, // 5MB file size limit
+    fileSize: 5 * 1024 * 1024, // 5MB file size limit per file
+    files: 5, // Maximum number of files allowed
   },
   fileFilter: (req, file, cb) => {
     // Accept image files only
@@ -25,7 +26,17 @@ const upload = multer({
   },
 });
 
-router.post("/", upload.single("image"), addCar);
+// Define fields for multiple file uploads
+const uploadFields = upload.fields([
+  { name: "image", maxCount: 1 },
+  { name: "insuranceDocs", maxCount: 1 },
+  { name: "registrationCopy", maxCount: 1 },
+  { name: "roadPermit", maxCount: 1 },
+  { name: "taxToken", maxCount: 1 },
+]);
+
+// Routes
+router.post("/", uploadFields, addCar);
 router.get("/", getCars);
 router.get("/my-cars", getMyCars);
 router.put("/update-status", updateCarStatus);
