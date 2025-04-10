@@ -5,7 +5,7 @@ const carSchema = new mongoose.Schema(
     VehicleRegistrationNo: {
       type: String,
       required: true,
-      unique: true,
+      unique: false,
     },
     name: {
       type: String,
@@ -48,11 +48,11 @@ const carSchema = new mongoose.Schema(
       required: true,
     },
     // Add this to your carSchema
-    carLocation: {
-      type: String,
-      required: true,
-      trim: true,
-    },
+    // carLocation: {
+    //   type: String,
+    //   required: true,
+    //   trim: true,
+    // },
     imageUrl: {
       type: String,
       required: true,
@@ -73,13 +73,33 @@ const carSchema = new mongoose.Schema(
       enum: ["Pending", "Approved", "Rejected"], // Add any other statuses you need
       default: "Pending",
     },
-    createdAt: {
+    rentMessage: {
+      type: String,
+      require: false,
+    },
+    requestingTime: {
       type: Date,
       default: Date.now,
+    },
+    requesterEmail: {
+      type: String,
+      required: true,
+    },
+    requesterName: {
+      type: String,
+      required: true,
+    },
+    requesterPhone: {
+      type: String,
+      required: true,
+    },
+    requesterUserName: {
+      type: String,
+      required: true,
     },
   },
   { timestamps: true }
 );
 
-const CarRents = mongoose.model("CarRents", carSchema);
+const CarRents = mongoose.model("Car_Rents", carSchema);
 module.exports = CarRents;

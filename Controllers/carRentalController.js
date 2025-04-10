@@ -1,53 +1,68 @@
 const CarRentals = require("../Model/CarRentModel");
 
 const addRentalInfo = async (req, res) => {
-  try {
-    const {
-      VehicleRegistrationNo,
-      name,
-      model,
-      price,
-      type,
-      transmission,
-      fuelType,
-      seats,
-      features,
-      carLocation,
-      imageUrl,
-    } = req.body;
+  const {
+    VehicleRegistrationNo,
+    name,
+    model,
+    price,
+    type,
+    transmission,
+    fuelType,
+    seats,
+    features,
+    carLocation,
+    imageUrl,
+    addedBy,
+    ownerEmail,
+    carStatus,
+    rentMessage,
+    requestingTime,
+    requesterEmail,
+    requesterName,
+    requesterPhone,
+    requesterUserName,
 
-    // Check if the vehicle already exists
-    const existingCar = await CarRentals.findOne({ VehicleRegistrationNo });
-    if (existingCar) {
-      return res.status(400).json({ message: "Vehicle already exists" });
-    }
+    // requesterLocation,
+    // createdAt,
+    // updatedAt
+  } = req.body;
 
-    // Create a new car rental entry
-    const newCarRental = new CarRentals({
-      VehicleRegistrationNo,
-      name,
-      model,
-      price,
-      type,
-      transmission,
-      fuelType,
-      seats,
-      features,
-      carLocation,
-      imageUrl,
-    });
+  //todo: Check if the vehicle already exists
+  //   const existingCar = await CarRentals.findOne({ VehicleRegistrationNo });
+  //   if (existingCar) {
+  //     return res.status(400).json({ message: "Vehicle already exists" });
+  //   }
 
-    await newCarRental.save();
+  // Create a new car rental entry
+  const newCarRental = new CarRentals({
+    VehicleRegistrationNo,
+    name,
+    model,
+    price,
+    type,
+    transmission,
+    fuelType,
+    seats,
+    features,
+    carLocation,
+    imageUrl,
+    addedBy,
+    ownerEmail,
+    carStatus,
+    rentMessage,
+    requestingTime,
+    requesterEmail,
+    requesterName,
+    requesterPhone,
+    requesterUserName,
+  });
 
-    res
-      .status(201)
-      .json({ message: "Car rental added successfully", newCarRental });
-  } catch (error) {
-    console.error("Error adding car rental:", error);
-    res.status(500).json({ message: "Server error", error });
-  }
+  await newCarRental.save();
+
+  res
+    .status(201)
+    .json({ message: "Car rental added successfully", newCarRental });
 };
-
-// ... existing code ...
 
 module.exports = { addRentalInfo };
