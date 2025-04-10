@@ -13,8 +13,12 @@ const {
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: {
+<<<<<<< HEAD
     fileSize: 5 * 1024 * 1024, // 5MB file size limit per file
     files: 5, // Maximum number of files allowed
+=======
+    fileSize: 5 * 1024 * 1024, // 5MB file size limit
+>>>>>>> e3643719dd38e4fd759852fbcc448168a076f7d6
   },
   fileFilter: (req, file, cb) => {
     // Accept image files only
@@ -26,6 +30,7 @@ const upload = multer({
   },
 });
 
+<<<<<<< HEAD
 // Define fields for multiple file uploads
 const uploadFields = upload.fields([
   { name: "image", maxCount: 1 },
@@ -43,3 +48,12 @@ router.put("/update-status", updateCarStatus);
 router.delete("/:carId", deleteCar);
 
 module.exports = router;
+=======
+router.post("/", upload.single("image"), addCar);
+router.get("/", getCars);
+router.get("/my-cars", getMyCars);
+router.put("/update-status", updateCarStatus);
+router.delete("/:carId", deleteCar);
+
+module.exports = router;
+>>>>>>> e3643719dd38e4fd759852fbcc448168a076f7d6
