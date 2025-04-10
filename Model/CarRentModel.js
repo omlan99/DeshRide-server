@@ -5,7 +5,7 @@ const carSchema = new mongoose.Schema(
     VehicleRegistrationNo: {
       type: String,
       required: true,
-      unique: true,
+      unique: false,
     },
     name: {
       type: String,
@@ -48,11 +48,11 @@ const carSchema = new mongoose.Schema(
       required: true,
     },
     // Add this to your carSchema
-    carLocation: {
-      type: String,
-      required: true,
-      trim: true,
-    },
+    // carLocation: {
+    //   type: String,
+    //   required: true,
+    //   trim: true,
+    // },
     imageUrl: {
       type: String,
       required: true,
@@ -101,5 +101,5 @@ const carSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const CarRents = mongoose.model("CarRents", carSchema);
+const CarRents = mongoose.model("Car_Rents", carSchema);
 module.exports = CarRents;
