@@ -1,8 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
-const { addCar, getCars } = require("../Controllers/carController");
-const { get } = require("mongoose");
+const {
+  addCar,
+  getCars,
+  getMyCars,
+  updateCarStatus,
+  deleteCar,
+} = require("../Controllers/carController");
 
 // Configure multer for file upload
 const upload = multer({
@@ -20,11 +25,10 @@ const upload = multer({
   },
 });
 
-// Route for adding a car with image upload
 router.post("/", upload.single("image"), addCar);
-
-// Route for getting all cars
 router.get("/", getCars);
-// router.get("/get-cars", getCarsFromHook);
+router.get("/my-cars", getMyCars);
+router.put("/update-status", updateCarStatus);
+router.delete("/:carId", deleteCar);
 
 module.exports = router;

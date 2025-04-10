@@ -46,6 +46,12 @@ const carSchema = new mongoose.Schema({
         type: [String],
         required: true
     },
+    // Add this to your carSchema
+carLocation: {
+    type: String,
+    required: true,
+    trim: true
+},
     imageUrl: {
         type: String,
         required: true
