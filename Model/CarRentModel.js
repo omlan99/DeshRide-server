@@ -25,17 +25,17 @@ const carSchema = new mongoose.Schema(
     type: {
       type: String,
       required: true,
-      enum: ["Sedan", "SUV", "Truck", "Sports", "Luxury"],
+      // enum: ["Sedan", "SUV", "Truck", "Sports", "Luxury"],
     },
     transmission: {
       type: String,
       required: true,
-      enum: ["Automatic", "Manual"],
+      // enum: ["Automatic", "Manual"],
     },
     fuelType: {
       type: String,
       required: true,
-      enum: ["Gasoline", "Diesel", "Electric", "Hybrid"],
+      // enum: ["Gasoline", "Diesel", "Electric", "Hybrid"],
     },
     seats: {
       type: Number,
@@ -70,7 +70,7 @@ const carSchema = new mongoose.Schema(
     carStatus: {
       type: String,
       required: true,
-      enum: ["Pending", "Approved", "Rejected"], // Add any other statuses you need
+      // enum: ["Pending", "Approved", "Rejected"], // Add any other statuses you need
       default: "Pending",
     },
     rentMessage: {
