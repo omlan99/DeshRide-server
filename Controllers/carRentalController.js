@@ -71,11 +71,20 @@ const addRentalInfo = async (req, res) => {
 
 // path -> [/car-rental/get-car-rentals]
 const getRentalsByUser = async (req, res) => {
-  const { ownerEmail } = req.params; // Change to use URL params
+  const { ownerEmail } = req.params;
   // console.log(ownerEmail);
 
   // Fetch rentals from the database
   const rentals = await CarRentals.find({ ownerEmail });
+
+  res.status(200).json(rentals);
+};
+//?
+const getCarForRequester = async (req, res) => {
+  const { requesterEmail } = req.params;
+
+  // Fetch rentals from the database
+  const rentals = await CarRentals.find({ requesterEmail });
 
   res.status(200).json(rentals);
 };
@@ -125,4 +134,5 @@ module.exports = {
   getRentalsByUser,
   getRentalsByUserId,
   updateRentalStatus,
+  getCarForRequester,
 };
