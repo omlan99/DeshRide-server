@@ -133,6 +133,27 @@ const updateUserRole = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+const userUpdate = async (req, res) => {
+  try {
+    const { email } = req.params;
+    const updateData = req.body;
+    // console.log(email, updateData)
+    if (!email) {
+      return res.status(400).json({ error: "Email is required" });
+    }
+
+    const result = await User.updateOne({ email }, { $set: updateData });
+
+    if (result.modifiedCount === 0) {
+      return res.status(404).json({ error: "User not found or data unchanged" });
+    }
+
+    res.status(200).json({ message: "User updated successfully" });
+  } catch (error) {
+    console.error("Update error:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
 
 // Add this to your exports
 module.exports = {
@@ -141,4 +162,5 @@ module.exports = {
   getAllUsers,
   deleteUser,
   updateUserRole,
+  userUpdate
 };
