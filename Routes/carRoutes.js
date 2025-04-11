@@ -7,6 +7,7 @@ const {
   getMyCars,
   updateCarStatus,
   deleteCar,
+  updateAdvertiseStatus
 } = require("../Controllers/carController");
 
 // Configure multer for multiple file uploads
@@ -41,5 +42,6 @@ router.get("/", getCars);
 router.get("/my-cars", getMyCars);
 router.put("/update-status", updateCarStatus);
 router.delete("/:carId", deleteCar);
+router.put("/update-advertise", updateAdvertiseStatus);
 
 module.exports = router;
