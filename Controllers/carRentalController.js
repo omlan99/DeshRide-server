@@ -91,20 +91,33 @@ const getRentalsByUserId = async (req, res) => {
 
 const updateRentalStatus = async (req, res) => {
   const { id } = req.params;
-  // console.log(id);
+  const { rentStatus } = req.body;
 
-  // Find the rental by ID and update its rentStatus to ongoing
-  const updatedRental = await CarRentals.findByIdAndUpdate(
-    id,
-    { rentStatus: "ongoing" },
-    { new: true }
-  );
+  try {
+    // Make sure rentStatus is provided
+    if (!rentStatus) {
+      return res.status(400).json({ message: "rentStatus is required" });
+    }
 
-  if (!updatedRental) {
-    return res.status(404).json({ message: "Rental not found" });
+    // Find the rental by ID and update its rentStatus
+    const updatedRental = await CarRentals.findByIdAndUpdate(
+      id,
+      { rentStatus },
+      { new: true }
+    );
+
+    if (!updatedRental) {
+      return res.status(404).json({ message: "Rental not found" });
+    }
+
+    res.status(200).json({
+      message: "Rental status updated successfully",
+      updatedRental,
+    });
+  } catch (error) {
+    console.error("Error updating rental status:", error);
+    res.status(500).json({ message: "Server error" });
   }
-
-  res.status(200).json(updatedRental);
 };
 
 module.exports = {
