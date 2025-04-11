@@ -219,6 +219,46 @@ const deleteCar = async (req, res) => {
   }
 };
 
-// ... existing code ...
+//! Update advertise status
 
-module.exports = { addCar, getCars, getMyCars, updateCarStatus, deleteCar };
+const updateAdvertiseStatus = async (req, res) => {
+  try {
+      const { carId, advertise } = req.body;
+
+      // Validate inputs
+      if (!carId || advertise === undefined) {
+          return res.status(400).json({
+              message: "Car ID and advertise status are required",
+          });
+      }
+
+      // Determine the new advertise status
+      const newStatus = advertise ? 'Active' : 'Inactive';
+
+      // Update the car
+      const updatedCar = await Car.findByIdAndUpdate(
+          carId,
+          { advertiseStatus: newStatus },
+          { new: true }
+      );
+
+      if (!updatedCar) {
+          return res.status(404).json({
+              message: "Car not found",
+          });
+      }
+
+      res.status(200).json({
+          message: "Advertise status updated successfully",
+          car: updatedCar,
+      });
+  } catch (error) {
+      console.error("Error updating advertise status:", error);
+      res.status(500).json({
+          message: "Failed to update advertise status",
+          error: error.message,
+      });
+  }
+};
+
+module.exports = { addCar, getCars, getMyCars, updateCarStatus, deleteCar, updateAdvertiseStatus };

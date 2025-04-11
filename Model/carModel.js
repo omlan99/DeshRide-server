@@ -108,6 +108,11 @@ const carSchema = new mongoose.Schema({
         enum: ['Pending', 'Approved', 'Rejected'],
         default: 'Pending'
     },
+    advertiseStatus: {
+        type: String,
+        enum: ['Active', 'Inactive'],
+        default: 'Inactive' // Default to Inactive when a car is added
+    },
     createdAt: {
         type: Date,
         default: Date.now
