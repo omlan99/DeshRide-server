@@ -16,13 +16,25 @@ const carRentalRoutes = require("./Routes/CarRentalRoutes");
 // Add this before your routes
 
 // Middleware
-app.use(express.json());
+const allowedOrigins = [
+  "http://localhost:5173",
+
+  "https://desh-ride.surge.sh",
+  "https://desh-ride.netlify.app",
+];
+
 app.use(
   cors({
-    origin: "http://localhost:5173", // Explicit origin
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"], // Add required headers
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
