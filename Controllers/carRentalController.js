@@ -89,4 +89,40 @@ const getRentalsByUserId = async (req, res) => {
   res.status(200).json(data);
 };
 
-module.exports = { addRentalInfo, getRentalsByUser, getRentalsByUserId };
+const updateRentalStatus = async (req, res) => {
+  const { id } = req.params;
+  const { rentStatus } = req.body;
+
+  try {
+    // Make sure rentStatus is provided
+    if (!rentStatus) {
+      return res.status(400).json({ message: "rentStatus is required" });
+    }
+
+    // Find the rental by ID and update its rentStatus
+    const updatedRental = await CarRentals.findByIdAndUpdate(
+      id,
+      { rentStatus },
+      { new: true }
+    );
+
+    if (!updatedRental) {
+      return res.status(404).json({ message: "Rental not found" });
+    }
+
+    res.status(200).json({
+      message: "Rental status updated successfully",
+      updatedRental,
+    });
+  } catch (error) {
+    console.error("Error updating rental status:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+module.exports = {
+  addRentalInfo,
+  getRentalsByUser,
+  getRentalsByUserId,
+  updateRentalStatus,
+};
