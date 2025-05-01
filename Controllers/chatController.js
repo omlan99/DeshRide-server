@@ -52,4 +52,31 @@ const pushChat = async (req, res) => {
   }
 };
 
-module.exports = { pushChat };
+const getChatByChatId = async (req, res) => {
+  try {
+    // const { chatId } = req.params;
+    const chatId = req.params.chatId;
+    // console.log(chatId);
+
+    if (!chatId) {
+      return res.status(400).json({ error: "Chat ID is required" });
+    }
+
+    const chat = await Chat.find({ chatId });
+    if (!chat || chat.length === 0) {
+      return res.status(404).json({ error: "Chat not found" });
+    }
+    return res.status(200).json({
+      message: "Chat retrieved successfully",
+      data: chat,
+    });
+  } catch (error) {
+    console.error("Error retrieving chat:", error.message, error.stack);
+    return res.status(500).json({
+      error: "Internal server error",
+      details: error.message,
+    });
+  }
+};
+
+module.exports = { pushChat, getChatByChatId };
