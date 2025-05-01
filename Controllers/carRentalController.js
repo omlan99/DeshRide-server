@@ -1,4 +1,4 @@
-const CarRentals = require("../Model/CarRentModel");
+const CarRentals = require("../Model/carRentModel");
 
 const addRentalInfo = async (req, res) => {
   const {
