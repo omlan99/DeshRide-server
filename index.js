@@ -4,12 +4,14 @@ const cors = require("cors");
 const connect = require("./DB");
 
 const app = express();
+app.use(express.json()); // Middleware to parse JSON
 const connectDB = require("./DB");
 connectDB();
 
 const users = require("./Routes/usersRoutes");
 const carRoutes = require("./Routes/carRoutes");
 const carRentalRoutes = require("./Routes/CarRentalRoutes");
+const ChatRoutes = require("./Routes/ChatRoutes");
 
 // const cors = require("cors");
 
@@ -18,7 +20,6 @@ const carRentalRoutes = require("./Routes/CarRentalRoutes");
 // Middleware
 const allowedOrigins = [
   "http://localhost:5173",
-
   "https://desh-ride.surge.sh",
   "https://desh-ride.netlify.app",
 ];
@@ -41,6 +42,7 @@ app.use(
 app.use("/api", users);
 app.use("/cars", carRoutes);
 app.use("/car-rental", carRentalRoutes);
+app.use("/chats", ChatRoutes);
 
 // const userRoutes = require("./Routes/userRoutes"); // Import user routes
 const usersRoutes = require("./Routes/usersRoutes"); // Import users routes
